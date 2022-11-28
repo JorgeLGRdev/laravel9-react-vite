@@ -1,29 +1,22 @@
-// resources/js/App.jsx
+import './bootstrap';
+import '../css/app.css';
+
 import React from 'react';
-import { createRoot } from 'react-dom/client'
-//import TestComponent from './TestComponent';
+import { createRoot } from 'react-dom/client';
+import { createInertiaApp } from '@inertiajs/inertia-react';
+import { InertiaProgress } from '@inertiajs/progress';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-//componentes
-import ShowProductos from './ShowProductos'
-import CreateProducto from './CreateProducto'
-import EditProducto from './EditProducto'
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),
+    setup({ el, App, props }) {
+        const root = createRoot(el);
 
-export default function App(){
-    return(
-        <>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={ <ShowProductos/>} />
-            <Route path='/create' element={ <CreateProducto/>} />
-            <Route path='/edit/:id' element={ <EditProducto/>} />
-          </Routes>
-        </BrowserRouter>
-      </>
-    );
-}
+        root.render(<App {...props} />);
+    },
+});
 
-if(document.getElementById('root')){
-    createRoot(document.getElementById('root')).render(<App />)
-}
+InertiaProgress.init({ color: '#4B5563' });

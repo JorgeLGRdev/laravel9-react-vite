@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Producto;
+
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
 
 class ProductoController extends Controller
 {
@@ -16,7 +19,20 @@ class ProductoController extends Controller
     public function index()
     {
         $productos = Producto::all();
-        return $productos;
+       // return $productos;
+
+        //$posts = Post::all();
+        return Inertia::render('Productos/Index', ['productos' => $productos]);
+    }
+
+       /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function create()
+    {
+        return Inertia::render('Productos/Create');
     }
 
     /**
@@ -27,13 +43,16 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-           //Object 
-        $producto = new Producto();
-        $producto-> nombre = $request->nombre;
-        $producto-> precio = $request->precio;
-        $producto-> categoria = $request->categoria;
-        //$producto-> imagen = $image_path;
-        $producto->save();
+        Validator::make($request->all(), [
+            'nombre' => ['required'],
+            'precio' => ['required'],
+            'categoria' => ['required'],
+
+        ])->validate();
+   
+        Producto::create($request->all());
+    
+        return redirect()->route('productos.index');
     }
 
     /**
@@ -48,6 +67,19 @@ class ProductoController extends Controller
         return $producto;
     }
 
+        /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function edit(Producto $producto)
+    {
+        return Inertia::render('Productos/Edit', [
+            'producto' => $producto
+        ]);
+    }
+
+    
     /**
      * Update the specified resource in storage.
      *
@@ -57,12 +89,14 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $producto = Producto::findOrFail($request->id);
-        $producto->nombre = $request->nombre;
-        $producto->precio = $request->precio;
-        $producto->categoria = $request->categoria;
-        $producto->save();
-        return $producto;
+        Validator::make($request->all(), [
+            'nombre' => ['required'],
+            'precio' => ['required'],
+            'categoria' => ['required'],
+        ])->validate();
+    
+        Producto::find($id)->update($request->all());
+        return redirect()->route('productos.index');
     }
 
     /**
@@ -73,7 +107,7 @@ class ProductoController extends Controller
      */
     public function destroy($id)
     {
-        $producto = Producto::destroy($id);
-        return $producto;
+        Producto::find($id)->delete();
+        return redirect()->route('productos.index');
     }
 }

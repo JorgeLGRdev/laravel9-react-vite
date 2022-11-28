@@ -19,6 +19,19 @@ const ShowProductos = () => {
             //this.setState({ products });
             setProductos(products)
     })
+        .catch(err => { 
+        if (err.response) { 
+          // client received an error response (5xx, 4xx)
+          console.log(err);
+            console.log(err.response);
+        } else if (err.request) { 
+          // client never received a response, or request never left 
+          console.log(err);
+          console.log(err.request);
+        } else { 
+          // anything else 
+        } 
+      })
     //setProductos(response.data)
     }
 
