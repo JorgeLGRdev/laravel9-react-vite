@@ -4,10 +4,11 @@ import { Head, useForm, Link } from '@inertiajs/inertia-react';
   
 export default function Dashboard(props) {
   
-    const { data, setData, errors, producto } = useForm({
+    const { data, setData, errors, post } = useForm({
         nombre: "",
         precio: "",
         categoria: "",
+        image:"",
 
     });
   
@@ -34,7 +35,7 @@ export default function Dashboard(props) {
                                     className="px-6 py-2 text-white bg-blue-500 rounded-md focus:outline-none"
                                     href={ route("productos.index") }
                                 >
-                                    Back
+                                    Regresar
                                 </Link>
                             </div>
   
@@ -60,7 +61,7 @@ export default function Dashboard(props) {
                                     <div className="mb-4">
                                         <label className="">Precio</label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             className="w-full px-4 py-2"
                                             label="Precio"
                                             name="precio"
@@ -73,24 +74,47 @@ export default function Dashboard(props) {
                                             {errors.title}
                                         </span>
                                     </div>
+
                                     <div className="mb-4">
                                         <label className="">Categoria</label>
-                                        <input
-                                            type="text"
-                                            className="w-full px-4 py-2"
-                                            label="Categoria"
-                                            name="categoria"
-                                            value={data.categoria}
-                                            onChange={(e) =>
-                                                setData("categoria", e.target.value)
-                                            }
-                                        />
+                         
+
+<select
+        className="w-full px-4 py-2"
+        label="Categoria"
+        name="categoria"
+        value={data.categoria}
+        onChange={(e) =>
+            setData("categoria", e.target.value)
+        }
+>
+  <option value="Damas">Damas</option>
+  <option value="Niños">Niños</option>
+  <option value="Caballeros">Caballeros</option>
+</select>
+
                                         <span className="text-red-600">
                                             {errors.title}
                                         </span>
                                     </div>
 
-
+                                    <div className="mb-3">
+                                        <label className=''>Imagen:</label>
+                                        <input
+                                            id='image' 
+                                            type="file" 
+                                            name="image" 
+                                            accept="image/png, image/gif, image/jpeg"
+                                            onChange={(e) =>
+                                                setData("image", e.target.files[0])
+                                            }
+                                            className=""
+                                           />
+                                        <span className="text-red-600">
+                                            {errors.title}
+                                        </span>
+                                    </div>
+                                    
                                 </div>
 
 
@@ -103,7 +127,6 @@ export default function Dashboard(props) {
                                     </button>
                                 </div>
                             </form>
-  
                         </div>
                     </div>
                 </div>

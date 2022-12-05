@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Producto;
-
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ProductoController extends Controller
 {
@@ -19,8 +20,6 @@ class ProductoController extends Controller
     public function index()
     {
         $productos = Producto::all();
-       // return $productos;
-
         //$posts = Post::all();
         return Inertia::render('Productos/Index', ['productos' => $productos]);
     }
@@ -47,10 +46,23 @@ class ProductoController extends Controller
             'nombre' => ['required'],
             'precio' => ['required'],
             'categoria' => ['required'],
-
+            'image' => ['required'],
         ])->validate();
-   
-        Producto::create($request->all());
+
+       // Producto::create($request->all());
+
+            $img = $request->file('image', null);
+            $image = sha1(date('YmdHis') . Str::random(30)) . '.' . $img->extension();
+ 
+            Storage::disk('public')->putFileAs("productos", $img, $image);
+
+        $producto = new Producto();
+        $producto->nombre = $request->input('nombre');
+        $producto->precio = $request->input('precio');
+        $producto->categoria = $request->input('categoria');
+        $producto->imgPath = $image;
+
+        $producto->save();
     
         return redirect()->route('productos.index');
     }

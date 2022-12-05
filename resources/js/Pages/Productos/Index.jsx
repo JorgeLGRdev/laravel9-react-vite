@@ -7,7 +7,7 @@ export default function Dashboard(props) {
     const { productos } = usePage().props
   
     function destroy(e) {
-        if (confirm("Are you sure you want to delete this user?")) {
+        if (confirm("Estás seguro de que quieres eliminar este producto?")) {
             Inertia.delete(route("productos.destroy", e.currentTarget.id));
         }
     }
@@ -34,31 +34,30 @@ export default function Dashboard(props) {
                                 </Link>
                             </div>
   
-                            <table className="table-fixed w-full">
-                                <thead>
-                                    <tr className="bg-gray-100">
-                                        <th className="px-4 py-2 w-20">No.</th>
-                                        <th className="px-4 py-2">Nombre</th>
-                                        <th className="px-4 py-2">Precio</th>
-                                        <th className="px-4 py-2">Categoria</th>
-                                        <th className="px-4 py-2">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {productos.map(({ id, nombre, precio, categoria }) => (
-                                        <tr>
-                                            <td className="border px-4 py-2">{ id }</td>
-                                            <td className="border px-4 py-2">{ nombre }</td>
-                                            <td className="border px-4 py-2">{ precio }</td>
-                                            <td className="border px-4 py-2">{ categoria }</td>
-                                            <td className="border px-4 py-2">
-                                                <Link
-                                                    tabIndex="1"
-                                                    className="px-4 py-2 text-sm text-white bg-blue-500 rounded"
-                                                    href={route("productos.edit", id)}
-                                                >
-                                                    Edit
-                                                </Link>
+                            <div class="container m-auto grid grid-cols-3 gap-4">
+
+                            {productos.map(({ id, nombre, precio, categoria, imgPath, image_uri, }) => (
+                                        
+                                <div class="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+                                    <a href="#">
+                                        <img class="p-8 rounded-t-lg" width={200} height={200} src={image_uri} alt="Producto" />
+                                    </a>
+                                    <div class="px-5 pb-5">
+                                        <a href="#">
+                                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{nombre}</h5>
+                                        </a>
+                                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-400 dark:text-blue-800 ml-3">Categoria:</span>
+
+                                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">{categoria}</span>
+
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-3xl font-bold text-yellow-900 dark:text-yellow-400">${precio}</span>
+                                            <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-blue-800">Añadir al carrito</a>
+                                        </div>
+
+                                        <div class="flex items-center justify-between">
+                                            <a href={route("productos.edit", id)} class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800"><small>Editar</small></a>
+                                         
                                                 <button
                                                     onClick={destroy}
                                                     id={id}
@@ -66,24 +65,18 @@ export default function Dashboard(props) {
                                                     type="button"
                                                     className="mx-1 px-4 py-2 text-sm text-white bg-red-500 rounded"
                                                 >
-                                                    Delete
+                                                    Eliminar
                                                 </button>
-                                            </td>
-                                        </tr>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
                                     ))}
   
-                                    {productos.length === 0 && (
-                                        <tr>
-                                            <td
-                                                className="px-6 py-4 border-t"
-                                                colSpan="4"
-                                            >
-                                                No hay productos
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                            </div>
+                           
                         </div>
                     </div>
                 </div>

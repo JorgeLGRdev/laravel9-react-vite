@@ -9,7 +9,6 @@ export default function Dashboard(props) {
         nombre: producto.nombre || "",
         precio: producto.precio || "",
         categoria: producto.categoria || "",
-
     });
   
     function handleSubmit(e) {
@@ -21,7 +20,7 @@ export default function Dashboard(props) {
         <Authenticated
             auth={props.auth}
             errors={props.errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Post</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Editar producto</h2>}
         >
             <Head title="Productos" />
   
@@ -35,7 +34,7 @@ export default function Dashboard(props) {
                                     className="px-6 py-2 text-white bg-blue-500 rounded-md focus:outline-none"
                                     href={ route("productos.index") }
                                 >
-                                    Back
+                                    Regresar
                                 </Link>
                             </div>
   
@@ -61,7 +60,7 @@ export default function Dashboard(props) {
                                     <div className="mb-4">
                                         <label className="">Precio</label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             className="w-full px-4 py-2"
                                             label="Precio"
                                             name="precio"
@@ -77,20 +76,30 @@ export default function Dashboard(props) {
 
                                     <div className="mb-4">
                                         <label className="">Categoria</label>
-                                        <input
-                                            type="text"
-                                            className="w-full px-4 py-2"
-                                            label="Categoria"
-                                            name="categoria"
-                                            value={data.categoria}
-                                            onChange={(e) =>
-                                                setData("categoria", e.target.value)
-                                            }
-                                        />
+                              
+
+                                        
+                                        <select
+                                                className="w-full px-4 py-2"
+                                                label="Categoria"
+                                                name="categoria"
+                                                value={data.categoria}
+                                                onChange={(e) =>
+                                                    setData("categoria", e.target.value)
+                                                }
+                                        >
+                                        <option value="Damas">Damas</option>
+                                        <option value="Niños">Niños</option>
+                                        <option value="Caballeros">Caballeros</option>
+                                        </select>
+
                                         <span className="text-red-600">
                                             {errors.title}
                                         </span>
                                     </div>
+
+                           
+                                    
 
                                 
                                 </div>

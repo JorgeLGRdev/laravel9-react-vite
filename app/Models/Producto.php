@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 class Producto extends Model
 {
     use HasFactory;
@@ -12,7 +15,21 @@ class Producto extends Model
     protected $fillable = [
         'nombre',
         'precio',
-        'categoria'
+        'categoria',
+        'imgPath'
     ];
+
+    protected $appends = [
+        'image_uri'
+    ];
+
+    public function imageUri(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value, $attributes) => Storage::url("public/productos/" . $attributes['imgPath']),
+        );
+    }
+
+
     
 }
