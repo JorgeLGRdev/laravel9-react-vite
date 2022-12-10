@@ -1,15 +1,30 @@
 import React from 'react';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Inertia } from "@inertiajs/inertia";
-import { Head, usePage, Link } from '@inertiajs/inertia-react';
+import { Head, usePage, useForm, Link } from '@inertiajs/inertia-react';
+
+import ProductCard from '../Components/ProductCard'
   
 export default function Dashboard(props) {
+
     const { productos } = usePage().props
   
     function destroy(e) {
         if (confirm("Estás seguro de que quieres eliminar este producto?")) {
             Inertia.delete(route("productos.destroy", e.currentTarget.id));
         }
+    }
+
+    const { data, setData, errors, post } = useForm({
+        name: "",
+        price: "",
+        image: "",
+        quantity:"",
+    });
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        post(route("cart.store"));
     }
    
     return (
@@ -34,29 +49,36 @@ export default function Dashboard(props) {
                                 </Link>
                             </div>
   
-                            <div class="container m-auto grid grid-cols-3 gap-4">
+                            <div className="container m-auto grid grid-cols-3 gap-4">
 
-                            {productos.map(({ id, nombre, precio, categoria, imgPath, image_uri, }) => (
-                                        
-                                <div class="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+                            {productos.map((p) => (
+                                <div>
+                                    <ProductCard {...p}/>
+                                </div>
+                            ))}   
+
+                            {productos.map(({ id, name, price, category, image, image_uri, }) => (
+                                    
+                                <div key={id} className="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
                                     <a href="#">
-                                        <img class="p-8 rounded-t-lg" width={200} height={200} src={image_uri} alt="Producto" />
+                                        <img className="p-8 rounded-t-lg" width={200} height={200} src={image_uri} alt="Producto" />
                                     </a>
-                                    <div class="px-5 pb-5">
+                                    <div className="px-5 pb-5">
                                         <a href="#">
-                                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{nombre}</h5>
+                                            <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{name}</h5>
                                         </a>
-                                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-400 dark:text-blue-800 ml-3">Categoria:</span>
+                                        <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-400 dark:text-blue-800 ml-3">Categoria:</span>
 
-                                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">{categoria}</span>
+                                        <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">{category}</span>
 
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-3xl font-bold text-yellow-900 dark:text-yellow-400">${precio}</span>
-                                            <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-blue-800">Añadir al carrito</a>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-3xl font-bold text-yellow-900 dark:text-yellow-400">${price}</span>
+                                            Add to cart here            
+                                        
                                         </div>
 
-                                        <div class="flex items-center justify-between">
-                                            <a href={route("productos.edit", id)} class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800"><small>Editar</small></a>
+                                        <div className="flex items-center justify-between">
+                                            <a href={route("productos.edit", id)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800"><small>Editar</small></a>
                                          
                                                 <button
                                                     onClick={destroy}
@@ -69,11 +91,13 @@ export default function Dashboard(props) {
                                                 </button>
                                         </div>
 
+
+
                                     </div>
                                 </div>
 
 
-                                    ))}
+                            ))}
   
                             </div>
                            

@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,13 @@ use Inertia\Inertia;
 |
 */
 
-Route::resource('productos', ProductoController::class);
+Route::resource('productos', ProductController::class);
+//Route::resource('cart', CartController::class);
+
+//Cart routes
+Route::get('/carrito', [ProductController::class, 'carrito'])->name('carrito');
+
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

@@ -6,9 +6,9 @@ export default function Dashboard(props) {
   
     const { producto } = usePage().props;
     const { data, setData, put, errors } = useForm({
-        nombre: producto.nombre || "",
-        precio: producto.precio || "",
-        categoria: producto.categoria || "",
+        name: producto.name || "",
+        price: producto.price || "",
+        category: producto.category || "",
     });
   
     function handleSubmit(e) {
@@ -36,8 +36,10 @@ export default function Dashboard(props) {
                                 >
                                     Regresar
                                 </Link>
-                            </div>
+                             </div>
   
+                            
+
                             <form name="createForm" onSubmit={handleSubmit}>
                                 <div className="flex flex-col">
                                     <div className="mb-4">
@@ -46,10 +48,10 @@ export default function Dashboard(props) {
                                             type="text"
                                             className="w-full px-4 py-2"
                                             label="Nombre"
-                                            name="nombre"
-                                            value={data.nombre}
+                                            name="name"
+                                            value={data.name}
                                             onChange={(e) =>
-                                                setData("nombre", e.target.value)
+                                                setData("name", e.target.value)
                                             }
                                         />
                                         <span className="text-red-600">
@@ -63,10 +65,10 @@ export default function Dashboard(props) {
                                             type="number"
                                             className="w-full px-4 py-2"
                                             label="Precio"
-                                            name="precio"
-                                            value={data.precio}
+                                            name="price"
+                                            value={data.price}
                                             onChange={(e) =>
-                                                setData("precio", e.target.value)
+                                                setData("price", e.target.value)
                                             }
                                         />
                                         <span className="text-red-600">
@@ -76,16 +78,13 @@ export default function Dashboard(props) {
 
                                     <div className="mb-4">
                                         <label className="">Categoria</label>
-                              
-
-                                        
                                         <select
                                                 className="w-full px-4 py-2"
                                                 label="Categoria"
-                                                name="categoria"
-                                                value={data.categoria}
+                                                name="category"
+                                                value={data.category}
                                                 onChange={(e) =>
-                                                    setData("categoria", e.target.value)
+                                                    setData("category", e.target.value)
                                                 }
                                         >
                                         <option value="Damas">Damas</option>

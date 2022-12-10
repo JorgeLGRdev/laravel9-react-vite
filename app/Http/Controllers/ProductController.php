@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Producto;
+use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class ProductoController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::all();
+        $productos = Product::all();
         //$posts = Post::all();
         return Inertia::render('Productos/Index', ['productos' => $productos]);
     }
@@ -43,9 +43,9 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         Validator::make($request->all(), [
-            'nombre' => ['required'],
-            'precio' => ['required'],
-            'categoria' => ['required'],
+            'name' => ['required'],
+            'price' => ['required'],
+            'category' => ['required'],
             'image' => ['required'],
         ])->validate();
 
@@ -56,11 +56,11 @@ class ProductoController extends Controller
  
             Storage::disk('public')->putFileAs("productos", $img, $image);
 
-        $producto = new Producto();
-        $producto->nombre = $request->input('nombre');
-        $producto->precio = $request->input('precio');
-        $producto->categoria = $request->input('categoria');
-        $producto->imgPath = $image;
+        $producto = new Product();
+        $producto->name = $request->input('name');
+        $producto->price = $request->input('price');
+        $producto->category = $request->input('category');
+        $producto->image = $image;
 
         $producto->save();
     
@@ -75,7 +75,7 @@ class ProductoController extends Controller
      */
     public function show($id)
     {
-        $producto = Producto::find($id);
+        $producto = Product::find($id);
         return $producto;
     }
 
@@ -84,7 +84,7 @@ class ProductoController extends Controller
      *
      * @return response()
      */
-    public function edit(Producto $producto)
+    public function edit(Product $producto)
     {
         return Inertia::render('Productos/Edit', [
             'producto' => $producto
@@ -102,12 +102,12 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         Validator::make($request->all(), [
-            'nombre' => ['required'],
-            'precio' => ['required'],
-            'categoria' => ['required'],
+            'name' => ['required'],
+            'price' => ['required'],
+            'category' => ['required'],
         ])->validate();
     
-        Producto::find($id)->update($request->all());
+        Product::find($id)->update($request->all());
         return redirect()->route('productos.index');
     }
 
@@ -119,7 +119,13 @@ class ProductoController extends Controller
      */
     public function destroy($id)
     {
-        Producto::find($id)->delete();
+        Product::find($id)->delete();
         return redirect()->route('productos.index');
     }
+
+    public function carrito()
+    {
+        return Inertia::render('Productos/Cart');
+    }
+
 }
