@@ -15,7 +15,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'price',
-        'category',
+        'category_id',
         'image'
     ];
 
@@ -30,9 +30,9 @@ class Product extends Model
         );
     }
 
-//       public function categoria()
-  //  {
-    //    return $this->hasOne(Categoria::class, 'id', 'categoria_id');
-    //}
+     public function categoria()
+    {
+        return $this->hasOne(Category::class, 'id', 'category_id');
+    }
     
 }

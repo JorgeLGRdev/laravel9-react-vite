@@ -20,21 +20,25 @@ const ProductCard = (producto) => {
     return (
         <>
             <img
-                width="70%"
-                height={300}
+                className="p-8 rounded-t-lg"
+                width="75%"
+                height="75%"
                 src={image_uri}
                 alt={`producto-${id}`}
             />
-            <h3>{name}</h3>
-            <p className="text-xl text-red-400">Precio:&nbsp;${price}</p>
+            <div className="md:container md:mx-auto">
+                <h1 className="text-xl font-bold">{name}</h1>
+                <p className="text-xl text-red-400">Precio:&nbsp;${price}</p>
 
-            <button 
-            onClick={addCar}
-            type="button"
-            className="mx-1 px-4 py-2 text-sm text-white bg-yellow-500  hover:bg-yellow-700 rounded"                                       
-            >
-                Añadir al carrito
-            </button>
+                <button 
+                onClick={addCar}
+                type="button"
+                className="mx-1 px-4 py-2 text-sm text-white bg-yellow-500  hover:bg-yellow-700 rounded"                                       
+                >
+                    Añadir al carrito
+                </button>
+            </div>
+      
         </>
     );
 };

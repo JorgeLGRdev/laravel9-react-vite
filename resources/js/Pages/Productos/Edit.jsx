@@ -5,10 +5,13 @@ import { Head, useForm, usePage, Link } from '@inertiajs/inertia-react';
 export default function Dashboard(props) {
   
     const { producto } = usePage().props;
+    const { categorias } = usePage().props;
+
+
     const { data, setData, put, errors } = useForm({
         name: producto.name || "",
         price: producto.price || "",
-        category: producto.category || "",
+        category_id: producto.category_id || "",
     });
   
     function handleSubmit(e) {
@@ -31,7 +34,7 @@ export default function Dashboard(props) {
   
                             <div className="flex items-center justify-between mb-6">
                                 <Link
-                                    className="px-6 py-2 text-white bg-blue-500 rounded-md focus:outline-none"
+                                    className="px-6 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md focus:outline-none"
                                     href={ route("productos.index") }
                                 >
                                     Regresar
@@ -81,15 +84,21 @@ export default function Dashboard(props) {
                                         <select
                                                 className="w-full px-4 py-2"
                                                 label="Categoria"
-                                                name="category"
-                                                value={data.category}
+                                                name="category_id"
+                                                value={data.category_id}
                                                 onChange={(e) =>
-                                                    setData("category", e.target.value)
+                                                    setData("category_id", e.target.value)
                                                 }
                                         >
-                                        <option value="Damas">Damas</option>
-                                        <option value="Niños">Niños</option>
-                                        <option value="Caballeros">Caballeros</option>
+                                        <option disabled value="">
+                                        Seleccione una categoria
+                                        </option>
+                                        {categorias.map((c) => (
+                                                                    <option key={c.id} value={c.id}>
+                                                                        {c.name}
+                                                                    </option>
+                                        ))}
+
                                         </select>
 
                                         <span className="text-red-600">
@@ -107,7 +116,7 @@ export default function Dashboard(props) {
                                 <div className="mt-4">
                                     <button
                                         type="submit"
-                                        className="px-6 py-2 font-bold text-white bg-green-500 rounded"
+                                        className="px-6 py-2 font-bold text-white bg-green-500 hover:bg-green-700 rounded"
                                     >
                                         Actualizar
                                     </button>

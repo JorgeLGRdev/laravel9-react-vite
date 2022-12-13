@@ -33,6 +33,18 @@ const Cart = (props) => {
         ]);
     };
 
+    const comprar = () => {
+        //get TotalAmount
+        const subTotal = productos.map(({price,cantidad}) => price * cantidad );
+        let sum=0;
+        subTotal.map((sub) => sum += sub );
+        console.log(subTotal);
+        console.log(sum);
+
+        //debe mandar productos a Ventas.create
+        return route("ventas.create");
+    }
+
     useEffect(() => {
         localStorage.setItem("carrito", JSON.stringify(productos));
     }, [productos]);
@@ -55,7 +67,7 @@ const Cart = (props) => {
 
                             <div className="flex items-center justify-between mb-6">
                                     <Link
-                                        className="px-6 py-2 text-white bg-blue-500 rounded-md focus:outline-none"
+                                        className="px-6 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md focus:outline-none"
                                         href={ route("productos.index") }
                                     >
                                         Regresar
@@ -65,7 +77,7 @@ const Cart = (props) => {
 
                             <table className="table-fixed w-full">
                                 <thead>
-                                    <tr className="bg-gray-100">
+                                    <tr className="bg-orange-200">
                                         <th className="px-4 py-2 w-20" scope="col">ID</th>
                                         <th className="px-4 py-2 w-20" scope="col">Imagen</th>
                                         <th className="px-4 py-2 w-20" scope="col">Nombre</th>
@@ -78,7 +90,7 @@ const Cart = (props) => {
                                 <tbody>
                                     {productos.map(
                                         ({ id, image_uri, name, price, cantidad }) => (
-                                            <tr key={id}>
+                                            <tr key={id} className="hover:bg-gray-100">
                                                 <th className="border px-4 py-2">{id}</th>
                                                 <td className="border px-4 py-2">
                                                     <img
@@ -96,7 +108,7 @@ const Cart = (props) => {
                                                         <button
                                                             onClick={() => remove(id)}
                                                             type="button"
-                                                            className="mx-1 px-4 py-2 text-sm text-white bg-red-500 rounded"
+                                                            className="mx-1 px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-700 rounded"
                                                         >
                                                             del 
                                                             <i className=""></i>
@@ -104,7 +116,7 @@ const Cart = (props) => {
                                                         <button
                                                             onClick={() => addAmount(id)}
                                                             type="button"
-                                                            className="mx-1 px-4 py-2 text-sm text-white bg-blue-500 rounded"
+                                                            className="mx-1 px-4 py-2 text-sm text-white bg-blue-500 hover:bg-blue-700 rounded"
                                                         >
                                                             +
                                                             <i className="fa-solid fa-plus"></i>
@@ -114,7 +126,7 @@ const Cart = (props) => {
                                                                 subAmount(id, cantidad)
                                                             }
                                                             type="button"
-                                                            className="mx-1 px-4 py-2 text-sm text-white bg-yellow-500 rounded"
+                                                            className="mx-1 px-4 py-2 text-sm text-white bg-yellow-500 hover:bg-yellow-700 rounded"
                                                         >
                                                             -
                                                             <i className="fa-solid fa-minus"></i>
@@ -137,6 +149,17 @@ const Cart = (props) => {
                                     )}
                                 </tbody>
                             </table>
+                            <div className="flex items-center justify-between mb-6">
+                                  
+                                    <Link
+                                        className="px-6 py-2 text-white bg-green-500 hover:bg-green-700 rounded-md focus:outline-none"
+                                        href={ route("ventas.create") }
+                                    >
+                                        Comprar
+                                    </Link>
+                            
+                      
+                            </div>
                     </div>
                 </div>
             </div>

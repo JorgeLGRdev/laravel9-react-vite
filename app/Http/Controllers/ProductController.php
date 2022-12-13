@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -19,8 +20,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $productos = Product::all();
-        //$posts = Post::all();
+        //$productos = Product::all();
+        //return Inertia::render('Productos/Index', ['productos' => $productos]);
+
+        $productos = Product::with('categoria')->get();
         return Inertia::render('Productos/Index', ['productos' => $productos]);
     }
 
@@ -31,7 +34,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Productos/Create');
+        //return Inertia::render('Productos/Create');
+
+        $categorias = Category::all();
+        return Inertia::render('Productos/Create', ['categorias' => $categorias]);
     }
 
     /**
@@ -45,7 +51,7 @@ class ProductController extends Controller
         Validator::make($request->all(), [
             'name' => ['required'],
             'price' => ['required'],
-            'category' => ['required'],
+            'category_id' => ['required'],
             'image' => ['required'],
         ])->validate();
 
@@ -59,9 +65,8 @@ class ProductController extends Controller
         $producto = new Product();
         $producto->name = $request->input('name');
         $producto->price = $request->input('price');
-        $producto->category = $request->input('category');
+        $producto->category_id = $request->input('category_id');
         $producto->image = $image;
-
         $producto->save();
     
         return redirect()->route('productos.index');
@@ -86,9 +91,16 @@ class ProductController extends Controller
      */
     public function edit(Product $producto)
     {
+
+        $categorias = Category::all();
         return Inertia::render('Productos/Edit', [
+            'categorias' => $categorias, 
             'producto' => $producto
         ]);
+
+        //return Inertia::render('Productos/Edit', [
+          //  'producto' => $producto
+        //]);
     }
 
     
@@ -104,7 +116,7 @@ class ProductController extends Controller
         Validator::make($request->all(), [
             'name' => ['required'],
             'price' => ['required'],
-            'category' => ['required'],
+            'category_id' => ['required'],
         ])->validate();
     
         Product::find($id)->update($request->all());
